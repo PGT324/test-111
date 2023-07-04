@@ -1,3 +1,8 @@
+import coolsms from 'coolsms-node-sdk';
+import dotenv from "dotenv";
+dotenv.config();
+const mysms = coolsms.default
+
 //token function
 export function checkPhoneIsOk(myPhone) {
     if (myPhone.length < 10 || myPhone.length > 11) {
@@ -14,5 +19,11 @@ export function getToken() {
 }
 
 export function sendTokenToSMS(myPhone, result) {
-    console.log(`${myPhone}번호로 인증번호 ${result}를 전송합니다.`)
+
+    const messageService = new mysms(process.env.APIKEY, process.env.APISECRET);
+    messageService.sendOne({
+        to: myPhone,
+        from: '01046649194',
+        text: `[코드캠프] 안녕하세요? 요청하신 인증번호는 ${result} 입니다.`
+    })
 }
